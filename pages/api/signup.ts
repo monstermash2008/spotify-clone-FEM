@@ -5,20 +5,21 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const salt = await bcrypt.genSaltSync();
+  const salt = bcrypt.genSaltSync();
   const { email, password } = req.body;
+
   let user;
 
   try {
     user = await prisma.user.create({
       data: {
         email,
-        password: await bcrypt.hashSync(password, salt),
+        password: bcrypt.hashSync(password, salt),
       },
     });
   } catch (e) {
     res.status(401);
-    res.json({ message: "Email already in use" });
+    res.json({ error: "User already exists" });
     return;
   }
 
@@ -34,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.setHeader(
     "Set-Cookie",
-    cookie.serialize("SPOTIFY_CLONE_ACCESS_TOKEN", token, {
+    cookie.serialize("TRAX_ACCESS_TOKEN", token, {
       httpOnly: true,
       maxAge: 8 * 60 * 60,
       path: "/",

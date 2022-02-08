@@ -6,8 +6,11 @@ import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password } = req.body;
+
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: {
+      email,
+    },
   });
 
   if (user && bcrypt.compareSync(password, user.password)) {
@@ -18,12 +21,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         time: Date.now(),
       },
       "hello",
-      { expiresIn: "8h" }
+      {
+        expiresIn: "8h",
+      }
     );
 
     res.setHeader(
       "Set-Cookie",
-      cookie.serialize("SPOTIFY_CLONE_ACCESS_TOKEN", token, {
+      cookie.serialize("TRAX_ACCESS_TOKEN", token, {
         httpOnly: true,
         maxAge: 8 * 60 * 60,
         path: "/",
@@ -35,6 +40,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json(user);
   } else {
     res.status(401);
-    res.json({ error: "Invalid credentials" });
+    res.json({ error: "Email or Password is wrong" });
   }
 };

@@ -14,9 +14,7 @@ CREATE TABLE "Song" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "title" TEXT NOT NULL,
-    "year" INTEGER NOT NULL,
-    "genre" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "artistId" INTEGER NOT NULL,
 
     CONSTRAINT "Song_pkey" PRIMARY KEY ("id")
