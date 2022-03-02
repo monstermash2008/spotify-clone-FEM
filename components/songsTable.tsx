@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import { BsFillPlayFill } from "react-icons/bs";
-import { IconButton, Table, Th, Thead, Tr } from "@chakra-ui/react";
+import { IconButton, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 
 const SongTable = ({ songs }) => {
@@ -27,6 +27,26 @@ const SongTable = ({ songs }) => {
               </Th>
             </Tr>
           </Thead>
+
+          <Tbody>
+            {songs.map((song, index) => (
+              <Tr
+                sx={{
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                  },
+                }}
+                key={song.id}
+                cursor="cursor"
+              >
+                <Td>{index + 1}</Td>
+                <Td>{song.name}</Td>
+                <Td>{song.createdAt.toString()}</Td>
+                <Td>{song.duration}</Td>
+              </Tr>
+            ))}
+          </Tbody>
         </Table>
       </Box>
     </Box>
